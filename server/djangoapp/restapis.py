@@ -18,16 +18,17 @@ def get_request(endpoint, **kwargs):
         for key,value in kwargs.items():
             params=params+key+"="+value+"&"
 
-    request_url = backend_url+endpoint+"?"+params
-
+    request_url = backend_url.rstrip("/") + endpoint + "?" + params
+    
     print("GET from {} ".format(request_url))
     try:
         # Call get method of requests library with URL and parameters
-        response = requests.get(request_url)
+        response = requests.get(request_url, timeout=2)
         return response.json()
     except:
         # If any error occurs
         print("Network exception occurred")
+   
 
 # Add code for get requests to back end
 
@@ -36,7 +37,7 @@ def analyze_review_sentiments(text):
     request_url = sentiment_analyzer_url+"analyze/"+text
     try:
         # Call get method of requests library with URL and parameters
-        response = requests.get(request_url)
+        response = requests.get(request_url, timeout=2)
         return response.json()
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
@@ -56,3 +57,7 @@ def post_review(data_dict):
         print("Network exception occurred")
 
 # Add code for posting review
+# ❌ This is often left as a stub/placeholder
+def get_dealers_from_cf(endpoint, **kwargs):
+    results = get_request(endpoint, **kwargs)
+    return results
